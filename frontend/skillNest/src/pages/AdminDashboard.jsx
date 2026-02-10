@@ -1,3 +1,5 @@
+
+
 import { useEffect, useState } from "react";
 import API from "../api";
 
@@ -49,124 +51,67 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="flex">
+    <div className="p-8">
+      <h2 className="text-3xl font-bold mb-4">Admin Dashboard</h2>
 
-      {/* SIDEBAR */}
-      <div className="w-64 border-r min-h-screen p-6">
-        <h2 className="text-2xl font-bold mb-10">Dashboard</h2>
+      <form onSubmit={addCourse} className="border p-4 rounded mb-6">
+        <h3 className="text-xl font-bold mb-3">Add New Course</h3>
 
-        <ul className="space-y-8 text-xl font-semibold">
-          <li>Dashboard</li>
-          <li>Courses</li>
-          <li>Students</li>
-          <li>Add Course</li>
-          <li>Logout</li>
-        </ul>
-      </div>
+        <input
+          type="text"
+          placeholder="Title"
+          className="border p-2 w-full mb-3"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
 
-      {/* MAIN CONTENT */}
-      <div className="flex-1 p-10">
-        <h1 className="text-5xl font-bold mb-10">Admin Dashboard</h1>
+        <input
+          type="text"
+          placeholder="Description"
+          className="border p-2 w-full mb-3"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
 
-        {/* TOP BOXES */}
-        <div className="grid grid-cols-3 gap-8 mb-12">
-          <div className="border p-6">
-            <h3 className="text-xl font-bold">Total Courses</h3>
-            <p className="text-4xl text-gray-400 font-bold mt-4">
-              {courses.length}
-            </p>
-          </div>
+        <input
+          type="text"
+          placeholder="Duration"
+          className="border p-2 w-full mb-3"
+          value={duration}
+          onChange={(e) => setDuration(e.target.value)}
+        />
 
-          <div className="border p-6">
-            <h3 className="text-xl font-bold">Total Students</h3>
-            <p className="text-4xl text-gray-400 font-bold mt-4">00</p>
-          </div>
+        <input
+          type="number"
+          placeholder="Price"
+          className="border p-2 w-full mb-3"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+        />
 
-          <div className="border p-6">
-            <h3 className="text-xl font-bold">Revenue</h3>
-            <p className="text-4xl text-gray-400 font-bold mt-4">00</p>
-          </div>
-        </div>
+        <button className="bg-orange-600 text-white px-6 py-2 rounded">
+          Add Course
+        </button>
+      </form>
 
-        {/* ADD COURSE FORM */}
-        <form onSubmit={addCourse} className="border p-6 mb-10">
-          <h2 className="text-3xl font-bold mb-6">Add New Course</h2>
+      <h3 className="text-2xl font-bold mb-4">All Courses</h3>
 
-          <input
-            type="text"
-            placeholder="Title"
-            className="border p-3 w-full mb-4"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
+      <div className="grid grid-cols-3 gap-6">
+        {courses.map((course) => (
+          <div key={course._id} className="border p-4 rounded shadow">
+            <h3 className="text-xl font-bold">{course.title}</h3>
+            <p>{course.description}</p>
+            <p className="mt-2">{course.duration}</p>
+            <p>₹{course.price}</p>
 
-          <input
-            type="text"
-            placeholder="Description"
-            className="border p-3 w-full mb-4"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-
-          <input
-            type="text"
-            placeholder="Duration"
-            className="border p-3 w-full mb-4"
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-          />
-
-          <input
-            type="number"
-            placeholder="Price"
-            className="border p-3 w-full mb-4"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
-
-          <button className="border px-6 py-2 font-bold">
-            Add Course
-          </button>
-        </form>
-
-        {/* COURSES LIST TABLE */}
-        <h2 className="text-4xl font-bold mb-6">Courses List</h2>
-
-        <div className="border">
-          {/* Table Header */}
-          <div className="grid grid-cols-4 bg-gray-200 p-4 font-bold text-xl">
-            <p>Course Name</p>
-            <p>Duration</p>
-            <p>Price</p>
-            <p>Action</p>
-          </div>
-
-          {/* Table Rows */}
-          {courses.map((course) => (
-            <div
-              key={course._id}
-              className="grid grid-cols-4 p-6 border-t items-center text-lg"
+            <button
+              onClick={() => deleteCourse(course._id)}
+              className="mt-3 bg-red-600 text-white px-4 py-2 rounded"
             >
-              <p>{course.title}</p>
-              <p className="text-gray-500">{course.duration}</p>
-              <p className="text-gray-500">₹{course.price}</p>
-
-              <div className="flex gap-4">
-                <button className="border px-6 py-2 font-bold">
-                  Edit
-                </button>
-
-                <button
-                  onClick={() => deleteCourse(course._id)}
-                  className="border px-6 py-2 font-bold"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
+              Delete
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );
